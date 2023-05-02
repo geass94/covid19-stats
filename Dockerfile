@@ -8,7 +8,11 @@ RUN apt-get update && apt-get install -y \
     libpng-dev \
     libjpeg-dev \
     libfreetype6-dev \
-    && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/* \
+    && curl -sLS https://deb.nodesource.com/setup_18.x | bash - \
+    && apt-get install -y nodejs \
+    && npm install -g npm
+
 
 # Install PHP extensions
 RUN docker-php-ext-install pdo_mysql zip intl mbstring exif pcntl bcmath gd sockets
@@ -26,4 +30,4 @@ ENV COMPOSER_ALLOW_SUPERUSER=1
 
 EXPOSE 8000
 
-CMD bash -c "composer install && php artisan octane:install --server=roadrunner && php artisan octane:start --server=roadrunner --host=0.0.0.0 --port=8000"
+CMD bash -c "npm install && composer install && php artisan octane:install --server=roadrunner && php artisan octane:start --watch --server=roadrunner --host=0.0.0.0 --port=8000"
