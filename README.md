@@ -6,8 +6,6 @@
 
 1. Always Sync .env and .env example, to be clear whenever you add an .env variable add a similar key to .env.example
 
-##Features
-1. Docker
 
 ####How to run docker container:
 
@@ -30,7 +28,7 @@ Docker container should be running
 
 ####Services:
 
-API service will be available at http://127.0.0.1:8001
+API service will be available at http://127.0.0.1:8001/api
 
 MySQL service will be available at
 
