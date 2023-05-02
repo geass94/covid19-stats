@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class CountryResource extends JsonResource
+class CountryStatisticResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -14,13 +14,13 @@ class CountryResource extends JsonResource
      */
     public function toArray($request)
     {
-        $localizations = [];
-        foreach ($this->localizations as $localization) {
-            $localizations[$localization->locale] = $localization->title;
-        }
         return [
-            'name' => $localizations,
-            'code' => $this->country_code
+            'country' => CountryResource::make($this->country),
+            'confirmed' => $this->confirmed,
+            'recovered' => $this->recovered,
+            'critical' => $this->critical,
+            'deaths' => $this->deaths,
+            'date' => $this->created_at
         ];
     }
 }

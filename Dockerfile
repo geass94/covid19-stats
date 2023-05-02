@@ -26,6 +26,7 @@ COPY . /app
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 COPY --from=ghcr.io/roadrunner-server/roadrunner:latest /usr/bin/rr /usr/local/bin/rr
 
+
 ENV COMPOSER_ALLOW_SUPERUSER=1
 
 EXPOSE 8000

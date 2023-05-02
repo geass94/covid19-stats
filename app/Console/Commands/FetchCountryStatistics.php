@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use App\Models\Country;
 use App\Models\CountryStatistic;
 use App\Services\Impl\Devtestge;
+use Carbon\Carbon;
 use GuzzleHttp\Client;
 use Illuminate\Console\Command;
 
@@ -15,7 +16,7 @@ class FetchCountryStatistics extends Command
      *
      * @var string
      */
-    protected $signature = 'fetch:country:stats';
+    protected $signature = 'fetch:countries:stats';
 
     /**
      * The console command description.
@@ -43,9 +44,15 @@ class FetchCountryStatistics extends Command
     {
         Country::query()->chunk(10, function ($rows) use ($api) {
             foreach ($rows as $country) {
+                $todaysRecordExists = CountryStatistic::query()
+                    ->where('country_id', '=', $country->id)
+                    ->whereDate('created_at', Carbon::today())
+                    ->exists();
+                if ($todaysRecordExists) continue;
+
                 $res = $api->fetchCountryStats($country->country_code);
-                logger('RESPONSE', $res);
-                CountryStatistic::query()->updateOrCreate(['country_id' => $country->id], [
+
+                CountryStatistic::query()->create([
                     'country_id' => $country->id,
                     'confirmed' => $res['confirmed'],
                     'recovered' => $res['recovered'],

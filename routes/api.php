@@ -23,6 +23,6 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     });
 
     Route::get('/countries', [\App\Http\Controllers\CountryController::class, 'getAll']);
-    Route::get('/countries/{countryId}/statistics', [\App\Http\Controllers\CountryController::class, 'getAll']);
+    Route::get('/countries/statistics', [\App\Http\Controllers\CountryController::class, 'getStatistics']);
 
 });
