@@ -11,16 +11,16 @@
 
 Execute this commands at root level of project:
 
-    docker-compose -f docker-compose.local.yml build --no-cache (execute only at first run)
-    docker-compose -f docker-compose.local.yml up (on first run it installs dependencies and requires time)
+    docker-compose build --no-cache (execute only at first run)
+    docker-compose up (on first run it installs dependencies and requires time)
 
 ####How to migrate database and fetch initial data
 
 Docker container should be running
 
-    docker-compose -f docker-compose.local.yml exec app php artisan migrate:fresh
-    docker-compose -f docker-compose.local.yml exec app php artisan fetch:countries
-    docker-compose -f docker-compose.local.yml exec app php artisan fetch:countries:stats
+    docker-compose exec app php artisan migrate:fresh
+    docker-compose exec app php artisan fetch:countries
+    docker-compose exec app php artisan fetch:countries:stats
 
 ####How to stop:
 
@@ -38,3 +38,8 @@ MySQL service will be available at
     username: laravel
     password: secret
 
+####Testing:
+
+Docker should be running
+
+    docker-compose exec app php artisan test
