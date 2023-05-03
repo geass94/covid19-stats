@@ -14,11 +14,20 @@ class CountryController extends Controller
 {
     public function getAll(Request $request)
     {
-        return CountryResource::collection(Country::query()->with('localizations')->paginate($request->query('perPage', 15)));
+        return CountryResource::collection(
+            Country::query()
+                ->with('localizations')
+                ->paginate($request->query('perPage', 15))
+        );
     }
 
-    public function getStatistics()
+    public function getStatistics(Request $request)
     {
-        return CountryStatisticResource::collection(CountryStatistic::query()->whereDate('created_at', Carbon::today())->with('country')->get());
+        return CountryStatisticResource::collection(
+            CountryStatistic::query()
+                ->whereDate('created_at', Carbon::today())
+                ->with('country')
+                ->paginate($request->query('perPage', 15))
+        );
     }
 }

@@ -45,7 +45,7 @@ class FetchInitialCountriesData extends Command
         try {
             $res = $api->fetchCountries();
         } catch (\Exception $exception) {
-
+            echo $exception->getMessage();
         }
 
         foreach ($res as $data) {
@@ -60,7 +60,6 @@ class FetchInitialCountriesData extends Command
                     'title' => $data['name'][$locale]
                 ];
             }
-            echo "Created Country[$country->country_code]";
             $country->localizations()->createMany($localizations);
         }
         return 0;

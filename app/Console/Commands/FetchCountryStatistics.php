@@ -8,6 +8,7 @@ use App\Services\Impl\Devtestge;
 use Carbon\Carbon;
 use GuzzleHttp\Client;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\DB;
 
 class FetchCountryStatistics extends Command
 {
@@ -50,15 +51,21 @@ class FetchCountryStatistics extends Command
                     ->exists();
                 if ($todaysRecordExists) continue;
 
-                $res = $api->fetchCountryStats($country->country_code);
-
-                CountryStatistic::query()->create([
-                    'country_id' => $country->id,
-                    'confirmed' => $res['confirmed'],
-                    'recovered' => $res['recovered'],
-                    'critical' => $res['critical'],
-                    'deaths' => $res['deaths'],
-                ]);
+                try {
+                    DB::beginTransaction();
+                    $res = $api->fetchCountryStats($country->country_code);
+                    CountryStatistic::query()->create([
+                        'country_id' => $country->id,
+                        'confirmed' => $res['confirmed'],
+                        'recovered' => $res['recovered'],
+                        'critical' => $res['critical'],
+                        'deaths' => $res['deaths'],
+                    ]);
+                    DB::commit();
+                } catch (\Throwable $exception) {
+                    DB::rollBack();
+                    echo $exception->getMessage();
+                }
             }
         });
 

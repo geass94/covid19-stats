@@ -9,7 +9,7 @@ class Localization extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['title', 'body', 'locale'];
+    protected $fillable = ['title', 'body', 'locale', 'localizable_id', 'localizable_type'];
 
     public function localizable()
     {

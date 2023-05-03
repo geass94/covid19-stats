@@ -88,16 +88,8 @@ class AuthorizationApiTest extends TestCase
 
     public function test_whoami_returns_200_and_user_resource_when_token_is_present()
     {
-        $payload = [
-            'name' => $this->faker->name,
-            'password' => Hash::make(Str::random(8)),
-            'email' => $this->faker->email
-        ];
-        $response = $this->json('post', '/api/auth/signup', $payload)->getContent();
-        $auth = json_decode($response, true);
-        logger('AUTH', [$auth]);
         $this->json('get', '/api/user', [], [
-            'Authorization' => 'Bearer ' . $auth['data']['accessToken']
+            'Authorization' => 'Bearer ' . $this->getAccessToken()
         ])
             ->assertStatus(Response::HTTP_OK)
             ->assertJsonStructure([

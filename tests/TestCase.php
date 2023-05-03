@@ -8,6 +8,8 @@ use Faker\Factory;
 use Faker\Generator;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 abstract class TestCase extends BaseTestCase
 {
@@ -28,5 +30,18 @@ abstract class TestCase extends BaseTestCase
         if ($key === 'faker')
             return $this->faker;
         throw new Exception('Unknown Key Requested');
+    }
+
+    public function getAccessToken(): string
+    {
+        $payload = [
+            'name' => $this->faker->name,
+            'password' => Hash::make(Str::random(8)),
+            'email' => $this->faker->email
+        ];
+        $resp = $this->json('post', '/api/auth/signup', $payload)
+            ->assertStatus(201);
+        $data = json_decode($resp->getContent(), true);
+        return $data['data']['accessToken'];
     }
 }
