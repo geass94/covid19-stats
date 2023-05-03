@@ -19,7 +19,7 @@ class Devtestge implements DataFetchService
                 'accept' => 'application/json'
             ]
         ]);
-        if ($req->getStatusCode() !== 200) throw new BadResponseCode('Failed to fetch countries!');
+        if ($req->getStatusCode() !== 200) throw new \Exception('Failed to fetch countries!');
         $res = json_decode($req->getBody()->getContents(), true);
         return array_map(function ($item) {
             return [
@@ -38,7 +38,7 @@ class Devtestge implements DataFetchService
                 'Content-Type' => 'application/json'
             ]
         ]);
-        if ($req->getStatusCode() !== 200) throw new BadResponseCode('Failed to fetch data');
+        if ($req->getStatusCode() !== 200) throw new \Exception('Failed to fetch data');
 
         $res = json_decode($req->getBody()->getContents(), true);
         return [

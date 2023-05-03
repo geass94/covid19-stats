@@ -30,5 +30,17 @@ services:
     volumes:
       - dbdata:/var/lib/mysql
 
+  test_db:
+    image: mysql:8.0
+    restart: unless-stopped
+    environment:
+      - MYSQL_DATABASE=laravel
+      - MYSQL_USER=laravel
+      - MYSQL_PASSWORD=secret
+      - MYSQL_ROOT_PASSWORD=secret
+    volumes:
+      - test_dbdata:/var/lib/mysql
+
 volumes:
   dbdata:
+  test_dbdata:

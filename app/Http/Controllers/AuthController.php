@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\SignUpRequest;
+use App\Http\Resources\AuthResource;
+use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -19,10 +21,10 @@ class AuthController extends Controller
 
         $token = $user->createToken($request->userAgent())->plainTextToken;
 
-        return response()->json([
+        return AuthResource::make((object)[
             'accessToken' => $token,
             'user' => $user
-        ]);
+        ])->response()->setStatusCode(201);
     }
 
     public function login(LoginRequest $request)
@@ -39,10 +41,10 @@ class AuthController extends Controller
 
         $token = $user->createToken($request->userAgent())->plainTextToken;
 
-        return response()->json([
+        return AuthResource::make((object)[
             'accessToken' => $token,
             'user' => $user
-        ]);
+        ])->response()->setStatusCode(200);
     }
 
     public function logout(Request $request)
@@ -52,7 +54,7 @@ class AuthController extends Controller
 
     public function whoami(Request $request)
     {
-
+        return UserResource::make($request->user())->response()->setStatusCode(200);
     }
 
 
