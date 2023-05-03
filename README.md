@@ -12,7 +12,7 @@
 Execute this commands at root level of project:
 
     docker-compose build --no-cache (execute only at first run)
-    docker-compose up (on first run it installs dependencies and requires time)
+    docker-compose up (on first run it installs dependencies and requires time. you can use "-d" flag to run it in background)
 
 ####How to migrate database and fetch initial data
 
@@ -32,7 +32,15 @@ API service will be available at http://127.0.0.1:8001/api
 
 MySQL service will be available at
 
-    host: mysql
+    host: db
+    port: 3306
+    database: laravel
+    username: laravel
+    password: secret
+
+Test MySQL service will be available at
+
+    host: test_db
     port: 3306
     database: laravel
     username: laravel
@@ -40,6 +48,6 @@ MySQL service will be available at
 
 ####Testing:
 
-Docker should be running
+Docker container should be running
 
     docker-compose exec app php artisan test
