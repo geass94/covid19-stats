@@ -24,7 +24,7 @@ Docker container should be running
 
 ####How to stop:
 
-    docker-compose -f docker-compose.local.yml down
+    docker-compose down
 
 ####Services:
 
